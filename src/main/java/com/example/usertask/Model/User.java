@@ -1,14 +1,17 @@
 package com.example.usertask.Model;
 
 import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.Type;
 import jakarta.persistence.*;
 //import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Pattern;
-//import org.springframework.web.multipart.MultipartFile;
-//import java.io.IOException;
+import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.Serializable;
 
 
 
@@ -16,7 +19,7 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -52,6 +55,27 @@ public class User {
     private String address;
 
 
+//    for file upload
+//    @Lob
+//    @Column(name = "file_content")
+//    private byte[] fileContent;
+
+    @Transient
+//    @Getter @Setter
+    private MultipartFile userFile;
+
+    // Getter for userFile
+    public MultipartFile getUserFile() {
+        return userFile;
+    }
+
+    // Setter for userFile
+    public void setUserFile(MultipartFile userFile) {
+        this.userFile = userFile;
+    }
+
+
+
 
     //getters and setters
 
@@ -63,13 +87,13 @@ public class User {
 //        this.id = id;
 //    }
 //
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 //
 //
 //

@@ -4,6 +4,9 @@ import com.example.usertask.Model.User;
 import com.example.usertask.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+import java.util.Date;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -52,5 +55,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findByNameAndLastname(String name, String lastname) {
         return userRepository.findByNameAndLastname(name, lastname);
+    }
+
+//    @Scheduled(fixedDelay = 5000) // Run every 5 seconds
+//    public void scheduledTask() {
+//        System.out.println("Scheduled task executed at: " + new Date());
+//
+//    }
+
+    // scheduled task to fetch users at 12:00 am
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void fetchUsersAtMidnight() {
+
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            System.out.println("User: " + user.getName());
+        }
     }
 }
