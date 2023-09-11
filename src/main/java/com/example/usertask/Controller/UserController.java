@@ -13,7 +13,9 @@ import org.springframework.validation.FieldError;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+//import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
@@ -43,8 +45,8 @@ public class UserController {
 
     @GetMapping("/findByNameAndLastname")
     public List<User> findUsersByNameAndLastname(
-            @RequestParam("name") @NotBlank @Size(max = 50) String name,
-            @RequestParam("lastname") @NotBlank @Size(max = 50) String lastname
+            @RequestParam("name") @NotEmpty @Size(max = 50) String name,
+            @RequestParam("lastname") @NotEmpty @Size(max = 50) String lastname
     ) {
         return userService.findByNameAndLastname(name, lastname);
     }
