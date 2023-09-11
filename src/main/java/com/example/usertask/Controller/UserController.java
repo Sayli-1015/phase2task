@@ -36,6 +36,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private FileUploadController fileUploadController;
+
     @GetMapping()
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -79,36 +82,9 @@ public class UserController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestBody @Valid User user,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            List<String> errors = bindingResult.getAllErrors()
-                    .stream()
-                    .map(error -> {
-                        if (error instanceof FieldError) {
-                            FieldError fieldError = (FieldError) error;
-                            return fieldError.getField() + ": " + error.getDefaultMessage();
-                        } else {
-                            return error.getObjectName() + ": " + error.getDefaultMessage();
-                        }
-                    })
-                    .collect(Collectors.toList());
-
-            return ResponseEntity.badRequest().body(errors);
-        }
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("Please select a file to upload.");
-        }
-
-        // Set the MultipartFile to the user entity
-        user.setUserFile(file);
-
-        // Save the user entity to the database
-        User savedUser = userRepository.save(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    public String handleFileUpload() {
+        // Delegate file upload handling to the FileUploadController
+        return fileUploadController.handleFileUpload();
     }
 
     @PutMapping("/{id}")
