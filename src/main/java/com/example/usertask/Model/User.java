@@ -12,6 +12,8 @@ import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 
 
@@ -26,6 +28,7 @@ public class User implements Serializable {
 
 
 //    @NotBlank(message = "Name is required")
+    @JsonProperty("full_name")
     @NotEmpty(message = "Name is required")
     @Size(max = 50, message = "Name must be at most 50 characters")
     @Column(name = "name")
@@ -35,21 +38,24 @@ public class User implements Serializable {
 
 
 //    @NotBlank(message = "Last name is required")
-    @NotEmpty(message = "Name is required")
+    @JsonProperty("last_name")
+    @NotEmpty(message = "Lastname is required")
     @Size(max = 50, message = "Last name must be at most 50 characters")
     @Column(name = "lastname")
     private String lastname;
 
 
     //    @NotBlank(message = "Phone is required")
-    @NotEmpty(message = "Name is required")
+    @JsonProperty("phone_no")
+    @NotEmpty(message = "Phone is required")
     @Pattern(regexp = "\\d{10}", message = "Phone must be 10 digits")
     @Column(name = "phone")
     private String phone;
 
 
 //    @NotBlank(message = "Address is required")
-    @NotEmpty(message = "Name is required")
+    @JsonProperty("user_address")
+    @NotEmpty(message = "Address is required")
     @Size(max = 255, message = "Address must be at most 255 characters")
     @Column(name = "address")
     private String address;

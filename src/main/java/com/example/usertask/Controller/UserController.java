@@ -11,6 +11,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.RequestParam;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+
+
+
+
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -36,8 +43,8 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private FileUploadController fileUploadController;
+//    @Autowired
+//    private FileUploadController fileUploadController;
 
     @GetMapping()
     public List<User> getAllUsers() {
@@ -48,6 +55,12 @@ public class UserController {
     public ResponseEntity<User> getUserById(@PathVariable @Min(1) Long id) {
         Optional<User> userOptional = userRepository.findById(id);
         return userOptional.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/js/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/findByNameAndLastname")
@@ -81,11 +94,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
-    @PostMapping("/upload")
-    public String handleFileUpload() {
-        // Delegate file upload handling to the FileUploadController
-        return fileUploadController.handleFileUpload();
-    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid User user) {
